@@ -43,8 +43,8 @@ RUN curl -o miniconda.sh 'https://repo.anaconda.com/miniconda/Miniconda3-latest-
 
 ENV PATH="$PATH:$JUPYTER_HOME/miniconda/bin"
 
-# Install Jupyter notebook interface via miniconda.
-    RUN echo 'y' | julia -e 'import IJulia; IJulia.find_jupyter_subcommand("notebook")'
+# Install Jupyter Notebook.
+RUN conda install --yes notebook
 
 RUN mkdir \
     "$JUPYTER_HOME/data" \
@@ -56,4 +56,4 @@ VOLUME "$JUPYTER_HOME/.jupyter"
 
 EXPOSE 8888/tcp
 
-ENTRYPOINT ["/usr/bin/julia", "-e", "import IJulia; IJulia.notebook()"]
+ENTRYPOINT ["/home/jupyter/miniconda/bin/jupyter", "notebook"]
