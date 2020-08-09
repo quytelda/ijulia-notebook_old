@@ -53,7 +53,8 @@ ENV PATH="$PATH:$CONDA_DIR/bin"
 # Install IJulia and interactive plotting packages.
 RUN julia -e 'import Pkg; Pkg.update()' \
     && julia -e 'import Pkg; Pkg.add("IJulia"); Pkg.add("Plots"); Pkg.add("GR")' \
-    && julia -e 'import Pkg; Pkg.precompile()'
+    && julia -e 'import Pkg; Pkg.precompile()' \
+    && rm -rf "$JUPYTER_HOME/.julia/registries/General"
 
 VOLUME "$JUPYTER_HOME/data"
 VOLUME "$JUPYTER_HOME/.jupyter"
