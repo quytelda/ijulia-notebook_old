@@ -13,6 +13,16 @@ RUN groupadd --gid "$JUPYTER_GID" jupyter \
            --uid "$JUPYTER_UID" \
            jupyter
 
+# Install Jupyter Notebook dependencies.
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+	       bzip2 \
+	       fonts-liberation \
+	       locales \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 USER jupyter:jupyter
 WORKDIR "$JUPYTER_HOME"
 
