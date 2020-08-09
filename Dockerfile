@@ -35,6 +35,14 @@ RUN set -eux; \
     julia -e 'import Pkg; Pkg.add("IJulia"); Pkg.add("Plots"); Pkg.add("GR")'; \
     julia -e 'import Pkg; Pkg.precompile()';
 
+# Install miniconda.
+RUN curl -o miniconda.sh 'https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh' \
+    && echo '879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf688 miniconda.sh' \
+	| sha256sum -c - \
+    && /bin/bash ./miniconda.sh -b -p ./miniconda
+
+ENV PATH="$PATH:$JUPYTER_HOME/miniconda/bin"
+
 # Install Jupyter notebook interface via miniconda.
     RUN echo 'y' | julia -e 'import IJulia; IJulia.find_jupyter_subcommand("notebook")'
 
