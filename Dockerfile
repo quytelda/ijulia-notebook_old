@@ -35,14 +35,15 @@ ARG CONDA_SHA256='879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf6
 
 ENV CONDA_DIR="$JUPYTER_HOME/miniconda"
 
-RUN curl -o ./miniconda.sh "$CONDA_URL" \
-    && echo "$CONDA_SHA256 miniconda.sh" \
+RUN curl -o /tmp/miniconda.sh "$CONDA_URL" \
+    && echo "$CONDA_SHA256 /tmp/miniconda.sh" \
 	| sha256sum -c - \
-    && /bin/bash ./miniconda.sh -b -p "$CONDA_DIR" \
+    && /bin/bash /tmp/miniconda.sh -b -p "$CONDA_DIR" \
+    && rm /tmp/miniconda.sh \
+    \
     && $CONDA_DIR/bin/conda install --yes notebook \
     && $CONDA_DIR/bin/conda clean --all --force-pkgs-dirs --yes \
-    && rm ./miniconda.sh \
-	  \
+    \
     && mkdir "$JUPYTER_HOME/data" \
 	     "$JUPYTER_HOME/.jupyter"
 
