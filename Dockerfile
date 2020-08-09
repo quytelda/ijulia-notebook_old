@@ -15,3 +15,9 @@ RUN groupadd --gid "$JUPYTER_GID" jupyter \
 
 USER jupyter:jupyter
 WORKDIR "$JUPYTER_HOME"
+
+# Install IJulia and interactive plotting packages.
+RUN set -eux; \
+    julia -e 'import Pkg; Pkg.update()'; \
+    julia -e 'import Pkg; Pkg.add("IJulia"); Pkg.add("Plots"); Pkg.add("GR")'; \
+    julia -e 'import Pkg; Pkg.precompile()';
