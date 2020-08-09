@@ -52,10 +52,13 @@ COPY jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
 ENV PATH="$PATH:$CONDA_DIR/bin"
 
 # Install IJulia and interactive plotting packages.
-RUN julia -e 'import Pkg; Pkg.update()' \
-    && julia -e 'import Pkg; Pkg.add("IJulia"); Pkg.add("Plots"); Pkg.add("GR")' \
-    && julia -e 'import Pkg; Pkg.precompile()' \
-    && rm -rf "$JUPYTER_HOME/.julia/registries/General"
+COPY installpkgs.jl /tmp/
+RUN julia /tmp/installpkgs.jl \
+          IJulia \
+          Plots \
+          GR \
+    && rm -rf "$JUPYTER_HOME/.julia/registries/General" \
+    && rm /tmp/installpkgs.jl
 
 VOLUME "$JUPYTER_HOME/data"
 VOLUME "$JUPYTER_HOME/.jupyter"
