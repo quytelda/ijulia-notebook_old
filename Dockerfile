@@ -21,3 +21,18 @@ RUN set -eux; \
     julia -e 'import Pkg; Pkg.update()'; \
     julia -e 'import Pkg; Pkg.add("IJulia"); Pkg.add("Plots"); Pkg.add("GR")'; \
     julia -e 'import Pkg; Pkg.precompile()';
+
+# Install Jupyter notebook interface via miniconda.
+    RUN echo 'y' | julia -e 'import IJulia; IJulia.find_jupyter_subcommand("notebook")'
+
+RUN mkdir \
+    "$JUPYTER_HOME/data" \
+    "$JUPYTER_HOME/.jupyter"
+COPY jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
+
+VOLUME "$JUPYTER_HOME/data"
+VOLUME "$JUPYTER_HOME/.jupyter"
+
+EXPOSE 8888/tcp
+
+ENTRYPOINT ["/usr/bin/julia", "-e", "import IJulia; IJulia.notebook()"]
