@@ -11,7 +11,9 @@ RUN groupadd --gid "$JUPYTER_GID" jupyter \
            --home-dir "$JUPYTER_HOME" \
            --gid "$JUPYTER_GID" \
            --uid "$JUPYTER_UID" \
-           jupyter
+           jupyter \
+    && mkdir /data \
+    && chown jupyter:jupyter /data
 
 # Install Jupyter Notebook dependencies.
 ARG DEBIAN_FRONTEND=noninteractive
@@ -44,8 +46,7 @@ RUN curl -o /tmp/miniconda.sh "$CONDA_URL" \
     && $CONDA_DIR/bin/conda install --yes notebook \
     && $CONDA_DIR/bin/conda clean --all --force-pkgs-dirs --yes \
     \
-    && mkdir "$JUPYTER_HOME/data" \
-	     "$JUPYTER_HOME/.jupyter"
+    && mkdir "$JUPYTER_HOME/.jupyter"
 
 COPY --chown=jupyter:jupyter jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
 
@@ -60,7 +61,7 @@ RUN julia /tmp/installpkgs.jl \
     && rm -rf "$JUPYTER_HOME/.julia/registries/General" \
     && rm /tmp/installpkgs.jl
 
-VOLUME "$JUPYTER_HOME/data"
+VOLUME "/data"
 VOLUME "$JUPYTER_HOME/.jupyter"
 
 EXPOSE 8888/tcp
