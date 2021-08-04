@@ -1,4 +1,4 @@
-FROM docker.io/library/julia:1.5.0-buster
+FROM docker.io/library/julia:latest
 
 ENV JUPYTER_UID=1000
 ENV JUPYTER_GID=1000
