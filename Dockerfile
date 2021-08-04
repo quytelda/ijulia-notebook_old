@@ -47,12 +47,12 @@ RUN curl -o /tmp/miniconda.sh "$CONDA_URL" \
     && mkdir "$JUPYTER_HOME/data" \
 	     "$JUPYTER_HOME/.jupyter"
 
-COPY jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
+COPY --chown=jupyter:jupyter jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
 
 ENV PATH="$PATH:$CONDA_DIR/bin"
 
 # Install IJulia and interactive plotting packages.
-COPY installpkgs.jl /tmp/
+COPY --chown=jupyter:jupyter installpkgs.jl /tmp/
 RUN julia /tmp/installpkgs.jl \
           IJulia \
           Plots \
