@@ -2,7 +2,7 @@ FROM docker.io/library/julia:latest
 
 ENV JUPYTER_UID=1000
 ENV JUPYTER_GID=1000
-ENV JUPYTER_HOME=/home/jupyter
+ENV JUPYTER_HOME=/jupyter
 
 # Create a user to run the server daemon.
 RUN groupadd --gid "$JUPYTER_GID" jupyter \
