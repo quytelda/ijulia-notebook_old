@@ -44,7 +44,7 @@ RUN curl -o /tmp/miniconda.sh "$CONDA_URL" \
     && /bin/bash /tmp/miniconda.sh -b -p "$CONDA_DIR" \
     && rm /tmp/miniconda.sh \
     \
-    && $CONDA_DIR/bin/conda install --yes notebook \
+    && $CONDA_DIR/bin/conda install --yes jupyterlab \
     && $CONDA_DIR/bin/conda clean --all --force-pkgs-dirs --yes \
     \
     && mkdir "$JUPYTER_HOME/.jupyter"
@@ -67,4 +67,4 @@ VOLUME "$JUPYTER_HOME/.jupyter"
 
 EXPOSE 8888/tcp
 
-ENTRYPOINT ["jupyter", "notebook"]
+ENTRYPOINT ["jupyter", "lab"]
