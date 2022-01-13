@@ -23,6 +23,7 @@ RUN apt-get update --yes \
 	       bzip2 \
 	       fonts-liberation \
 	       locales \
+	       nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
