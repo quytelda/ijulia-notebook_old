@@ -45,11 +45,7 @@ RUN curl -o /tmp/miniconda.sh "$CONDA_URL" \
     && rm /tmp/miniconda.sh \
     \
     && $CONDA_DIR/bin/conda install --yes jupyterlab \
-    && $CONDA_DIR/bin/conda clean --all --force-pkgs-dirs --yes \
-    \
-    && mkdir "$JUPYTER_HOME/.jupyter"
-
-COPY --chown=jupyter:jupyter jupyter_notebook_config.py "$JUPYTER_HOME/.jupyter/"
+    && $CONDA_DIR/bin/conda clean --all --force-pkgs-dirs --yes
 
 ENV PATH="$PATH:$CONDA_DIR/bin"
 
@@ -63,7 +59,6 @@ RUN julia /tmp/installpkgs.jl \
     && rm /tmp/installpkgs.jl
 
 VOLUME "/data"
-VOLUME "$JUPYTER_HOME/.jupyter"
 
 EXPOSE 8888/tcp
 
