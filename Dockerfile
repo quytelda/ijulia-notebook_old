@@ -17,8 +17,9 @@ RUN groupadd --gid "$JUPYTER_GID" jupyter \
 
 # Install Jupyter Notebook dependencies.
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN apt-get update --yes \
+    && apt-get upgrade --yes \
+    && apt-get install --yes --no-install-recommends \
 	       bzip2 \
 	       fonts-liberation \
 	       locales \
