@@ -50,16 +50,17 @@ RUN mkdir /etc/julia && \
 USER ${NB_UID}
 
 # Add Julia packages.
+# Note: For brevity, repeated invocations of the Julia package manager
+#       have been condensed into the installpkgs.jl script.
 # Install IJulia as jovyan and then move the kernelspec out
 # to the system share location. Avoids problems with runtime UID change not
 # taking effect properly on the .local folder in the jovyan home dir.
-RUN julia -e 'import Pkg; Pkg.update()' && \
-    julia -e 'import Pkg; Pkg.add("HDF5")' && \
-    julia -e 'import Pkg; Pkg.add("Plots")' && \
-    julia -e 'import Pkg; Pkg.add("GR")' && \
-    julia -e 'import Pkg; Pkg.add("CairoMakie")' && \
-    julia -e 'import Pkg; Pkg.add("SpecialFunctions")' && \
-    julia -e 'using Pkg; pkg"add IJulia"; pkg"precompile"' && \
+COPY installpkgs.jl /tmp/
+RUN julia /tmp/installpkgs.jl \
+    HDF5 \
+    CairoMakie \
+    SpecialFunctions \
+    IJulia && \
     # move kernelspec out of home \
     mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
     chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
