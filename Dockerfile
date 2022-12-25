@@ -58,6 +58,7 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     julia -e 'import Pkg; Pkg.add("Plots")' && \
     julia -e 'import Pkg; Pkg.add("GR")' && \
     julia -e 'import Pkg; Pkg.add("CairoMakie")' && \
+    julia -e 'import Pkg; Pkg.add("SpecialFunctions")' && \
     julia -e 'using Pkg; pkg"add IJulia"; pkg"precompile"' && \
     # move kernelspec out of home \
     mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
